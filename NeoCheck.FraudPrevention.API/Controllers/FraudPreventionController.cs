@@ -43,25 +43,17 @@ namespace NeoCheck.FraudPrevention.API
                         // Si son fraudulentas, se agregan a la nueva lista para devolver en el response
                         if (AreOrdersFraudulent(purchases.Purchases[i], purchases.Purchases[j]))
                         {
-                            // Verificar si una orden ya está en la lista de órdenes fraudulentas
-                            if (fraudulentOrders.Any(order => order.OrderId == purchases.Purchases[i].OrderId))
-                            {
-                                fraudulentOrders.Add(purchases.Purchases[j]);
-                            }else if(fraudulentOrders.Any(order => order.OrderId == purchases.Purchases[j].OrderId))
-                            {
-                                fraudulentOrders.Add(purchases.Purchases[i]);
-                            }
-                            else
-                            {
-                                fraudulentOrders.Add(purchases.Purchases[i]);
-                                fraudulentOrders.Add(purchases.Purchases[j]);
-
-                            }
+                            
+                            fraudulentOrders.Add(purchases.Purchases[i]);
+                            fraudulentOrders.Add(purchases.Purchases[j]);
                             
                             
                         }
                     }
                 }
+                // Verificar si una orden ya está en la lista de órdenes fraudulentas
+                fraudulentOrders = fraudulentOrders.Distinct().ToList();
+
                 // Ordena la lista de órdenes fraudulentas por OrderId en Ascendente
                 fraudulentOrders = fraudulentOrders.OrderBy(order => order.OrderId).ToList();
 
